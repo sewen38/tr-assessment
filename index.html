@@ -297,14 +297,17 @@ table.cm td:first-child{text-align:left;font-weight:500}
       statusColor='#f59e0b';
     }
 
-    var pathLabel='';
-    var pathAmount='';
-    var pathDetail='';
-    if(pathIsReal){pathLabel='🏠 房地产投资';pathAmount='$40万';pathDetail='购买≥$40万房产，持有3年后可出售，收回本金。';}
-    else if(pathIsDeposit){pathLabel='🏦 银行存款';pathAmount='$50万';pathDetail='存入土耳其银行$50万，锁定3年后可取出。';}
-    else if(pathIsBonds){pathLabel='📜 政府债券';pathAmount='$50万';pathDetail='购买土耳其政府债券$50万，持有3年后可赎回。';}
-    else if(pathIsFund){pathLabel='💰 房地产基金';pathAmount='$50万';pathDetail='投资土耳其房地产投资基金份额$50万，持有3年。';}
-    else if(pathIsJobs){pathLabel='🏭 创造就业';pathAmount='50岗位';pathDetail='在土耳其设立企业并创造≥50个就业岗位。';}
+    var pathMeta={
+      realestate:{label:'🏠 房地产投资',amount:'$40万',detail:'购买≥$40万房产，持有3年后可出售，收回本金。',exit:'3年后出售房产，回收$40万本金（按当前政策，3年持有期满后可自由出售给任何买家，不受CBI限制）。房产增值部分为额外收益。'},
+      deposit:{label:'🏦 银行存款',amount:'$50万',detail:'存入土耳其银行$50万，锁定3年后可取出。',exit:'3年后可取回$50万本金+利息（利率按土耳其央行政策）。'},
+      bonds:{label:'📜 政府债券',amount:'$50万',detail:'购买土耳其政府债券$50万，持有3年后可赎回。',exit:'3年后债券到期可赎回$50万本金+票面利息。'},
+      fund:{label:'💰 房地产基金',amount:'$50万',detail:'投资土耳其房地产投资基金份额$50万，持有3年。',exit:'3年后基金份额可赎回，收回投资本金（具体收益取决于基金表现）。'},
+      jobs:{label:'🏭 创造就业',amount:'50岗位',detail:'在土耳其设立企业并创造≥50个就业岗位。',exit:'无固定退出周期——企业经营产生的利润为回报，退出可通过转让公司实现。'}
+    };
+    var selectedMeta=paths.map(function(p){return pathMeta[p];}).filter(Boolean);
+    var pathLabel=selectedMeta.map(function(x){return x.label;}).join('、');
+    var pathAmount=selectedMeta.map(function(x){return x.amount;}).join(' / ');
+    var pathDetail=selectedMeta.map(function(x){return '<b>'+x.label+'（'+x.amount+'）</b>：'+x.detail;}).join('<br>');
 
     // E-2 assessment
     var e2ok=true; // Turkey IS E-2 treaty country
@@ -316,12 +319,7 @@ table.cm td:first-child{text-align:left;font-weight:500}
     var huaqiaoDetail='孩子持土耳其护照，在报名前2年内实际居住满18个月（建议高中阶段赴土耳其或第三国就读），即可参加华侨生联考，以相对较低分数进入985/211高校。';
 
     // Exit strategy
-    var exitDetail='';
-    if(pathIsReal){exitDetail='3年后出售房产，回收$40万本金（按当前政策，3年持有期满后可自由出售给任何买家，不受CBI限制）。房产增值部分为额外收益。';}
-    else if(pathIsDeposit){exitDetail='3年后可取回$50万本金+利息（利率按土耳其央行政策）。';}
-    else if(pathIsBonds){exitDetail='3年后债券到期可赎回$50万本金+票面利息。';}
-    else if(pathIsFund){exitDetail='3年后基金份额可赎回，收回投资本金（具体收益取决于基金表现）。';}
-    else if(pathIsJobs){exitDetail='无固定退出周期——企业经营产生的利润为回报，退出可通过转让公司实现。';}
+    var exitDetail=selectedMeta.map(function(x){return '<b>'+x.label+'</b>：'+x.exit;}).join('<br>');
 
     // Timeline
     var timelineObj={'urgent':'6-8个月审批周期可满足紧急需求。建议立即启动材料准备（护照、出生证明、结婚证等公证+翻译）。','normal':'6-8个月审批周期符合您的时间预期。可按正常节奏推进。','flexible':'6-8个月审批周期在您的时间范围内，可从容准备。'};
@@ -370,7 +368,7 @@ table.cm td:first-child{text-align:left;font-weight:500}
     var pathStatus=pathIsReal?'q':'m';
     h+='<div class="prog '+(pathStatus==='q'?'el':'mb')+'"><h4>投资路径</h4><span class="st st-'+pathStatus+'">'+(pathStatus==='q'?'✅ 最优':'⚠️ 可选')+'</span><div class="d">';
     h+='<span class="'+(pathIsReal?'g':'o')+'">'+pathLabel+' — '+pathAmount+'</span><br>'+pathDetail;
-    if(!pathIsReal)h+='<br><span style="font-size:12px;color:#888">💡 温馨提示：房地产投资（$40万）是最主流路径，成本最低且可3年后出售退出。银行存款/债券/基金门槛为$50万且资金锁定3年。';
+    if(!pathIsReal)h+='<br><span style="font-size:12px;color:#888">💡 温馨提示：房地产投资（$40万）是最主流路径，成本最低且可3年后出售退出。银行存款/债券/基金门槛为$50万且资金锁定3年。</span>';
     h+='</div></div>';
 
     // 4. E-2 to US
@@ -427,7 +425,7 @@ table.cm td:first-child{text-align:left;font-weight:500}
     }else if(status==='qualified'){
       recText='<strong>推荐方案」</strong>您倾向的'+pathLabel+'路径条件满足。不过我们建议同时评估房地产投资路径（$40万），作为成本更低的替代方案。';
     }else if(status==='conditional'){
-      recText='<strong>有条件推荐」</strong>您的投资能力基本满足，但建议：'+(path!=='realestate'?'考虑房地产投资路径（$40万）以获得最低投资门槛。':'')+(fundsource!=='yes'?'提前准备资金来源证明材料。':'');
+      recText='<strong>有条件推荐」</strong>您的投资能力基本满足，但建议：'+(!pathIsReal?'考虑房地产投资路径（$40万）以获得最低投资门槛。':'')+(fundsource!=='yes'?'提前准备资金来源证明材料。':'');
     }else{
       recText='<strong>替代建议」</strong>如当前预算不足$40万，可考虑：<br>· 瓦努阿图CBI：单人$13万起，30-60天获批<br>· 多米尼克CBI：$20万起，免签140+国（含申根）<br>· 格鲁吉亚居留：$10万起购房，1%所得税';
     }
