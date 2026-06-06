@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>土耳其投资入籍项目资格评估</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',sans-serif;background:#f5f6f8;color:#1a1a1a;line-height:1.6;-webkit-text-size-adjust:100%}
+.container{max-width:720px;margin:0 auto;padding:0 0 40px}
+.header{background:linear-gradient(135deg,#8b1e1e,#c9302c);color:#fff;padding:32px 20px 28px;text-align:center;position:sticky;top:0;z-index:10}
+.header h1{font-size:22px;margin-bottom:4px}
+.header p{opacity:.85;font-size:13px}
+.card{background:#fff;border-radius:14px;padding:24px 18px;margin:16px 12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.card h2{font-size:17px;color:#8b1e1e;margin-bottom:16px;padding-bottom:10px;border-bottom:1.5px solid #eef1f5;display:flex;align-items:center;gap:8px}
+.card h2 .num{background:#8b1e1e;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.fg{margin-bottom:16px}
+.fg label.q{display:block;font-weight:600;font-size:14px;margin-bottom:5px;color:#333}
+.fg .hint{font-size:12px;color:#999;margin-bottom:4px;font-weight:400}
+.fg select,.fg input[type=text]{width:100%;padding:11px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:15px;transition:border .2s;background:#fafafa;-webkit-appearance:none}
+.fg select:focus,.fg input:focus{outline:none;border-color:#c9302c;background:#fff}
+.detail-input{margin-top:8px;display:none}
+.detail-input.show{display:block}
+.detail-input input{width:100%;padding:10px 12px;border:1.5px solid #f5c6c6;border-radius:8px;font-size:14px;background:#fef5f5}
+.detail-input input::placeholder{color:#999}
+.detail-input .label-sm{font-size:12px;color:#666;margin-bottom:4px;display:block}
+.radio-row{display:flex;gap:10px;flex-wrap:wrap}
+.radio-row .ropt{flex:1;min-width:80px;padding:10px 16px;border:1.5px solid #ddd;border-radius:8px;text-align:center;cursor:pointer;font-size:14px;background:#fafafa;transition:all .15s;user-select:none}
+.radio-row .ropt:active,.radio-row .ropt.sel{border-color:#c9302c;background:#fef5f5;font-weight:600;color:#8b1e1e}
+.radio-row input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+.btn{display:block;width:calc(100% - 24px);margin:20px auto;padding:14px;background:linear-gradient(135deg,#8b1e1e,#c9302c);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer}
+.btn:active{transform:scale(.98)}
+
+.results-wrap{display:none;margin:0 12px}
+.results-wrap.show{display:block}
+.rs-card{background:#fff;border-radius:14px;padding:20px 18px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.rs-card h3{font-size:18px;margin-bottom:6px;color:#8b1e1e}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;margin:3px}
+.tg{background:#dcfce7;color:#166534}
+.ty{background:#fef3c7;color:#92400e}
+.tr{background:#fee2e2;color:#991b1b}
+.prog{background:#f8fafc;border-radius:10px;padding:16px;margin-bottom:10px}
+.prog.el{border-left:4px solid #22c55e}
+.prog.mb{border-left:4px solid #f59e0b}
+.prog.no{border-left:4px solid #e0e0e0;opacity:.85}
+.prog h4{font-size:15px;margin-bottom:6px;color:#8b1e1e}
+.prog .st{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;margin-bottom:6px}
+.st-q{background:#dcfce7;color:#166534}.st-m{background:#fef3c7;color:#92400e}.st-n{background:#fee2e2;color:#991b1b}
+.prog .d{font-size:13px;color:#555;line-height:1.7}
+.g{color:#166534;font-weight:600}.o{color:#c2410c;font-weight:600}
+table.cm{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
+table.cm th,table.cm td{border:1px solid #e2e8f0;padding:7px;text-align:center}
+table.cm th{background:#f1f5f9;font-weight:600;font-size:11px}
+table.cm td:first-child{text-align:left;font-weight:500}
+.hb{background:#fef5f5;border:1px solid #f5c6c6;border-radius:8px;padding:12px;margin:10px 0;font-size:13px}
+.hb.g{background:#f0fdf4;border-color:#bbf7d0}
+.hb.w{background:#fff7ed;border-color:#fed7aa}
+.btn-sm{display:inline-block;padding:10px 20px;margin:4px 0;background:#eef1f5;color:#555;border:none;border-radius:8px;font-size:13px;cursor:pointer}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid #ddd;border-top-color:#c9302c;border-radius:50%;animation:spin .8s linear infinite;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Investment path cards */
+.path-cards{display:flex;flex-direction:column;gap:10px}
+.path-card{border:2px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;transition:all .15s;background:#fafafa}
+.path-card:hover{border-color:#c9302c}
+.path-card.sel{border-color:#c9302c;background:#fef5f5}
+.path-card .path-t{font-weight:700;font-size:14px;color:#333;margin-bottom:3px}
+.path-card .path-p{font-size:12px;color:#666}
+.path-card .path-badge{float:right;font-size:10px;background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:10px;font-weight:600}
+
+@media(max-width:400px){.radio-row .ropt{min-width:60px;padding:8px 12px;font-size:13px}.card{padding:18px 14px;margin:10px 8px}.header h1{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>🇹🇷 土耳其投资入籍项目资格评估</h1><p>Citizenship by Investment · 2026政策 · 约3分钟</p></div>
+
+<form id="qform">
+
+<div class="card"><h2><span class="num">1</span> 基本信息</h2>
+<div class="fg"><label class="q">年龄</label><select id="age"><option value="">请选择</option><option value="18-30">18-30岁</option><option value="31-40">31-40岁</option><option value="41-50">41-50岁</option><option value="51-60">51-60岁</option><option value="60+">60岁及以上</option></select></div>
+<div class="fg"><label class="q">当前国籍<span class="hint">（土耳其CBI无国籍限制，所有国家均可申请）</span></label><select id="nationality"><option value="">请选择</option><option value="cn">中国内地</option><option value="cn-hkmo">中国香港/澳门</option><option value="cn-tw">中国台湾</option><option value="ru">俄罗斯</option><option value="ir">伊朗</option><option value="other-asia">其他亚洲国家</option><option value="eu">欧洲国家</option><option value="me">中东/北非</option><option value="other">其他</option></select></div>
+<div class="fg"><label class="q">是否有无犯罪记录<span class="hint">（选择“是”表示无犯罪记录；土耳其入籍要求无犯罪记录证明）</span></label><div class="radio-row"><label class="ropt"><input type="radio" name="nocrim" value="yes"> 是</label><label class="ropt"><input type="radio" name="nocrim" value="no"> 否</label></div></div>
+<div class="fg"><label class="q">健康状况<span class="hint">（需提供基础健康证明，无重大传染病）</span></label><div class="radio-row"><label class="ropt"><input type="radio" name="health" value="good"> 良好</label><label class="ropt"><input type="radio" name="health" value="issue"> 有需要说明的情况</label></div></div>
+</div>
+
+<div class="card"><h2><span class="num">2</span> 投资能力评估</h2>
+<div class="fg"><label class="q">个人/家庭可投资净资产<span class="hint">（含现金、房产、股票、基金等，美元）</span></label><select id="networth"><option value="">请选择</option><option value="lt400k">低于$40万（约¥292万）</option><option value="400k-1m">$40万-$100万（约¥292万-¥730万）</option><option value="1m-5m">$100万-$500万（约¥730万-¥3650万）</option><option value="gte5m">$500万及以上（约¥3650万+）</option></select></div>
+<div class="fg"><label class="q">首选投资路径</label>
+<div class="path-cards" id="path-cards">
+  <div class="path-card sel" data-path="realestate">
+    <span class="path-badge">⭐ 最主流</span>
+    <div class="path-t">🏠 房地产投资 — $40万起</div>
+    <div class="path-p">购买一套或多套房产≥$40万，持有3年后可出售退出</div>
+  </div>
+  <div class="path-card" data-path="deposit">
+    <div class="path-t">🏦 银行存款 — $50万起</div>
+    <div class="path-p">在土耳其银行存入$50万，存期3年</div>
+  </div>
+  <div class="path-card" data-path="bonds">
+    <div class="path-t">📜 政府债券 — $50万起</div>
+    <div class="path-p">购买土耳其政府债券$50万，持有3年</div>
+  </div>
+  <div class="path-card" data-path="fund">
+    <div class="path-t">💰 房地产基金 — $50万起</div>
+    <div class="path-p">投资土耳其房地产投资基金$50万，持有3年</div>
+  </div>
+  <div class="path-card" data-path="jobs">
+    <div class="path-t">🏭 创造就业 — 50个岗位</div>
+    <div class="path-p">在土耳其设立企业并创造至少50个就业岗位</div>
+  </div>
+</div>
+</div>
+<div class="fg"><label class="q">投资资金来源是否可合法解释？<span class="hint">（土耳其CBI对资金来源要求较宽松，但建议可说明）</span></label><div class="radio-row"><label class="ropt"><input type="radio" name="fundsource" value="yes"> 是，可提供</label><label class="ropt"><input type="radio" name="fundsource" value="partial"> 部分可提供</label><label class="ropt"><input type="radio" name="fundsource" value="no"> 难以提供</label></div></div>
+<div class="fg"><label class="q">是否有意愿赴土耳其实地考察房产？</label><div class="radio-row"><label class="ropt"><input type="radio" name="visit" value="yes"> 是</label><label class="ropt"><input type="radio" name="visit" value="maybe"> 视情况而定</label><label class="ropt"><input type="radio" name="visit" value="no"> 否，可远程办理</label></div></div>
+</div>
+
+<div class="card"><h2><span class="num">3</span> 家庭情况</h2>
+<div class="fg"><label class="q">婚姻状况</label><select id="marital"><option value="">请选择</option><option value="single">单身</option><option value="married">已婚</option><option value="divorced">离异</option></select></div>
+<div class="fg"><label class="q">是否有18岁以下子女？<span class="hint">（配偶及18岁以下子女可随行一同入籍）</span></label><div class="radio-row"><label class="ropt"><input type="radio" name="haschild" value="yes"> 是</label><label class="ropt"><input type="radio" name="haschild" value="no"> 否</label></div>
+<div id="dt-child" class="detail-input"><span class="label-sm">18岁以下子女人数及年龄：</span><input type="text" id="child-info" placeholder="例如：2个，8岁和5岁"></div></div>
+<div class="fg"><label class="q">是否有18岁以上子女需要安排？</label><div class="radio-row"><label class="ropt"><input type="radio" name="adultchild" value="yes"> 是</label><label class="ropt"><input type="radio" name="adultchild" value="no"> 否</label></div>
+<div id="dt-adultchild" class="detail-input"><span class="label-sm">成年子女年龄及情况：</span><input type="text" id="adultchild-info" placeholder="例如：22岁在读大学"></div></div>
+</div>
+
+<div class="card"><h2><span class="num">4</span> 移民目的<span class="hint" style="font-weight:400;font-size:12px">（可多选）</span></h2>
+<div class="fg">
+<div class="radio-row">
+<label class="ropt"><input type="checkbox" name="purpose" value="e2"> 🇺🇸 E-2赴美</label>
+<label class="ropt"><input type="checkbox" name="purpose" value="exam"> 🎓 华侨生联考</label>
+<label class="ropt"><input type="checkbox" name="purpose" value="asset"> 💼 资产配置</label>
+</div>
+</div>
+<div class="fg">
+<div class="radio-row">
+<label class="ropt"><input type="checkbox" name="purpose" value="passport"> 📘 第二护照</label>
+<label class="ropt"><input type="checkbox" name="purpose" value="lifestyle"> 🏖️ 生活方式</label>
+<label class="ropt"><input type="checkbox" name="purpose" value="other"> 📋 其他</label>
+</div>
+</div>
+<div class="fg" id="dt-purpose-other" style="display:none"><span class="label-sm">请简述其他目的：</span><input type="text" id="purpose-other-info" placeholder="例如：英国企业家跳板、医疗保障等"></div>
+<div class="fg"><label class="q">时间紧迫程度</label><select id="urgency"><option value="">请选择</option><option value="urgent">非常紧急（希望6个月内完成）</option><option value="normal">一般（6-12个月可接受）</option><option value="flexible">灵活（1年以上也可以）</option></select></div>
+</div>
+
+<div class="card"><h2><span class="num">5</span> 其他考虑因素</h2>
+<div class="fg"><label class="q">是否同时申请其他国家的移民项目？</label><div class="radio-row"><label class="ropt"><input type="radio" name="concurrent" value="yes"> 是</label><label class="ropt"><input type="radio" name="concurrent" value="no"> 否</label></div>
+<div id="dt-concurrent" class="detail-input"><span class="label-sm">请说明同时申请的国家及项目：</span><input type="text" id="concurrent-info" placeholder="例如：瓦努阿图CBI、葡萄牙黄金签证"></div></div>
+<div class="fg"><label class="q">对土耳其当地生活的接受度</label><div class="radio-row"><label class="ropt"><input type="radio" name="trlife" value="yes"> 愿意长居</label><label class="ropt"><input type="radio" name="trlife" value="part"> 短期停留即可</label><label class="ropt"><input type="radio" name="trlife" value="no"> 仅需护照，无意居住</label></div></div>
+<div class="fg"><label class="q">是否有特殊关注事项？<span class="hint">（如税务规划、兵役问题等）</span></label><input type="text" id="concerns" placeholder="请简述（可选）"></div>
+</div>
+
+<button type="button" class="btn" onclick="submitForm()">📊 提交评估</button>
+</form>
+
+<div class="results-wrap" id="results"></div>
+</div>
+
+<script>
+(function(){
+  var D=document;
+  function R(name){var e=D.querySelector('input[name="'+name+'"]:checked');return e?e.value:null;}
+  function S(id){var e=D.getElementById(id);return e?e.value:'';}
+  function I(id){var e=D.getElementById(id);return e?e.value.trim():'';}
+  function Y(v){return v==='yes'?'是':v==='no'?'否':(v||'未填');}
+  function CB(name){var es=D.querySelectorAll('input[name="'+name+'"]:checked'),a=[];es.forEach(function(e){a.push(e.value);});return a;}
+
+  // Radio selection
+  // Mobile-safe option buttons: do not rely on native hidden input click/change events
+  function selectOption(label){
+    var input=label.querySelector('input');
+    if(!input)return;
+    if(input.type==='radio'){
+      input.checked=true;
+      var row=label.closest('.radio-row');
+      if(row)row.querySelectorAll('.ropt').forEach(function(l){l.classList.remove('sel');});
+      label.classList.add('sel');
+      onChange(input.name,input.value);
+    }else if(input.type==='checkbox'){
+      input.checked=!input.checked;
+      label.classList.toggle('sel',input.checked);
+      if(input.name==='purpose'&&input.value==='other')D.getElementById('dt-purpose-other').style.display=input.checked?'block':'none';
+    }
+  }
+  D.querySelectorAll('.radio-row .ropt').forEach(function(label){
+    label.setAttribute('tabindex','0');
+    label.addEventListener('touchstart',function(e){selectOption(this);e.preventDefault();}, {passive:false});
+    label.addEventListener('mousedown',function(e){selectOption(this);e.preventDefault();});
+    label.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){selectOption(this);e.preventDefault();}});
+  });
+
+  // Path card selection
+  var pcards=D.querySelectorAll('.path-card');
+  var selectedPath='realestate';
+  pcards.forEach(function(card){card.addEventListener('click',function(){pcards.forEach(function(c){c.classList.remove('sel');});this.classList.add('sel');selectedPath=this.dataset.path;});});
+
+  window.goBack=function(){var D=document;D.getElementById("results").classList.remove("show");D.getElementById("qform").style.display="";setTimeout(function(){D.getElementById("qform").scrollIntoView({behavior:"smooth"});},50);};
+  function onChange(n,v){
+    if(n==='haschild')D.getElementById('dt-child').classList.toggle('show',v==='yes');
+    if(n==='adultchild')D.getElementById('dt-adultchild').classList.toggle('show',v==='yes');
+    if(n==='concurrent')D.getElementById('dt-concurrent').classList.toggle('show',v==='yes');
+  }
+
+  D.getElementById('haschild').parentElement.querySelector('input')?.addEventListener('change',function(){onChange('haschild',this.value);});
+  D.querySelectorAll('input[name="haschild"]').forEach(function(r){r.addEventListener('change',function(){onChange('haschild',this.value);});});
+  D.querySelectorAll('input[name="adultchild"]').forEach(function(r){r.addEventListener('change',function(){onChange('adultchild',this.value);});});
+  D.querySelectorAll('input[name="concurrent"]').forEach(function(r){r.addEventListener('change',function(){onChange('concurrent',this.value);});});
+
+  window.submitForm=function(){
+    var age=S('age'),nat=S('nationality'),nocrim=R('nocrim'),health=R('health'),networth=S('networth'),fundsource=R('fundsource'),visit=R('visit'),marital=S('marital'),haschild=R('haschild'),adultchild=R('adultchild'),urgency=S('urgency'),concurrent=R('concurrent'),trlife=R('trlife');
+    if(!age||!nat||!nocrim||!health||!networth||!fundsource||!visit||!marital||!haschild||!adultchild||!urgency||!concurrent||!trlife){var m=[];if(!age)m.push('年龄');if(!nat)m.push('当前国籍');if(!nocrim)m.push('犯罪记录');if(!health)m.push('健康状况');if(!networth)m.push('净资产');if(!fundsource)m.push('资金来源');if(!visit)m.push('考察意愿');if(!marital)m.push('婚姻状况');if(!haschild)m.push('是否有子女');if(!adultchild)m.push('成年子女');if(!urgency)m.push('时间紧迫度');if(!concurrent)m.push('是否有其他申请');if(!trlife)m.push('土生活接受度');alert('请完成：\n'+m.join('、'));return;}
+
+    var w=D.getElementById('results');
+    D.getElementById('qform').style.display='none';
+    w.innerHTML='<div class="rs-card" style="text-align:center;padding:50px 20px"><div style="font-size:40px">📤</div><h3>已提交</h3><p style="color:#888;font-size:13px;margin:6px 0"><span class="spinner"></span>正在分析评估...</p></div>';
+    w.classList.add('show');w.scrollIntoView({behavior:'smooth'});
+
+    var L_age={'18-30':'18-30岁','31-40':'31-40岁','41-50':'41-50岁','51-60':'51-60岁','60+':'60岁及以上'}
+    var L_nat={'cn':'中国内地','cn-hkmo':'中国香港/澳门','cn-tw':'中国台湾','ru':'俄罗斯','ir':'伊朗','other-asia':'其他亚洲国家','eu':'欧洲国家','me':'中东/北非','other':'其他'}
+    var L_networth={'lt400k':'低于$40万','400k-1m':'$40万-$100万','1m-5m':'$100万-$500万','gte5m':'$500万及以上'}
+    var L_marital={'single':'单身','married':'已婚','divorced':'离异'}
+    var L_urgency={'urgent':'非常紧急(6个月内)','normal':'一般(6-12个月)','flexible':'灵活(1年以上)'}
+    var L_trlife={'yes':'愿意长居','part':'短期停留','no':'仅需护照'}
+
+    var pathNames={'realestate':'房地产$40万','deposit':'银行存款$50万','bonds':'政府债券$50万','fund':'房地产基金$50万','jobs':'创造50就业'};
+
+    var ps=CB('purpose');
+    var puposesLabels={'e2':'E-2赴美','exam':'华侨生联考','asset':'资产配置','passport':'第二护照','lifestyle':'生活方式','other':'其他'};
+    var purposeText=ps.length>0?ps.map(function(v){return puposesLabels[v]||v;}).join('、'):'未选';
+
+    var data={
+      age:L_age[age]||age,
+      nationality:L_nat[nat]||nat,
+      nocrim:nocrim==='no'?'有犯罪记录':'无犯罪记录',
+      health:health==='good'?'良好':'有需要说明的情况',
+      networth:L_networth[networth]||networth,
+      path:pathNames[selectedPath]||selectedPath,
+      fundsource:fundsource==='yes'?'可提供':'部分可提供',
+      visit:visit==='yes'?'有意考察':visit==='maybe'?'视情况':'可远程',
+      marital:L_marital[marital]||marital,
+      haschild:Y(haschild)+(haschild==='yes'?'('+I('child-info')+')':''),
+      adultchild:Y(adultchild)+(adultchild==='yes'?'('+I('adultchild-info')+')':''),
+      purposes:purposeText,
+      urgency:L_urgency[urgency]||urgency,
+      concurrent:Y(concurrent)+(concurrent==='yes'?'('+I('concurrent-info')+')':''),
+      trlife:L_trlife[trlife]||trlife,
+      concerns:I('concerns')||'无'
+    };
+    fetch('https://formsubmit.co/ajax/1104890128@qq.com',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});
+
+    setTimeout(function(){showResults(nocrim,health,networth,fundsource,selectedPath,haschild,adultchild,urgency,marital,age);},2000);
+  };
+
+  function showResults(nocrim,health,networth,fundsource,path,haschild,adultchild,urgency,marital,age){
+    // Criminal record is a hard blocker
+    if(nocrim==='no'){
+      D.getElementById('results').innerHTML='<div class="rs-card" style="border-left:4px solid #ef4444"><h3>⚠️ 评估结果</h3><p style="color:#991b1b;font-weight:600;margin:8px 0">经核实，您可能存在犯罪记录。土耳其投资入籍要求申请人提供无犯罪记录证明，背景审查不通过将无法获批。</p><p style="font-size:13px;color:#666">建议：先咨询移民律师评估记录性质及是否可清除/豁免。</p><button class="btn-sm" onclick="goBack()">✏️ 返回修改</button></div>';return;
+    }
+
+    var nwOk=networth!=='lt400k';
+    var nwGt1m=networth==='1m-5m'||networth==='gte5m';
+    var pathOk=path==='realestate'||path==='deposit'||path==='bonds'||path==='fund'||path==='jobs';
+    var pathIsReal=path==='realestate';
+    var pathIsDeposit=path==='deposit';
+    var pathIsBonds=path==='bonds';
+    var pathIsFund=path==='fund';
+    var pathIsJobs=path==='jobs';
+    var hasKids=haschild==='yes';
+
+    // Overall assessment
+    var status='qualified'; // qualified | conditional | not-qualified
+    var statusLabel='✅ 基本符合';
+    var statusColor='#22c55e';
+
+    if(!nwOk){
+      status='not-qualified';
+      statusLabel='❌ 暂不符合';
+      statusColor='#ef4444';
+    }else if(pathIsDeposit||pathIsBonds||pathIsFund){
+      status='conditional';
+      statusLabel='⚠️ 有条件符合';
+      statusColor='#f59e0b';
+    }else if(fundsource==='no'||fundsource==='partial'){
+      status='conditional';
+      statusLabel='⚠️ 有条件符合';
+      statusColor='#f59e0b';
+    }
+
+    var pathLabel='';
+    var pathAmount='';
+    var pathDetail='';
+    if(pathIsReal){pathLabel='🏠 房地产投资';pathAmount='$40万';pathDetail='购买≥$40万房产，持有3年后可出售，收回本金。';}
+    else if(pathIsDeposit){pathLabel='🏦 银行存款';pathAmount='$50万';pathDetail='存入土耳其银行$50万，锁定3年后可取出。';}
+    else if(pathIsBonds){pathLabel='📜 政府债券';pathAmount='$50万';pathDetail='购买土耳其政府债券$50万，持有3年后可赎回。';}
+    else if(pathIsFund){pathLabel='💰 房地产基金';pathAmount='$50万';pathDetail='投资土耳其房地产投资基金份额$50万，持有3年。';}
+    else if(pathIsJobs){pathLabel='🏭 创造就业';pathAmount='50岗位';pathDetail='在土耳其设立企业并创造≥50个就业岗位。';}
+
+    // E-2 assessment
+    var e2ok=true; // Turkey IS E-2 treaty country
+    var e2Status='<span class="g">✅ E-2条约国——土耳其护照持有人可申请美国E-2投资者签证赴美经商/生活。</span>';
+    var e2Detail='土耳其是美国E-2条约国。持有土耳其护照后，在美国投资并经营企业（通常$10-20万起），可获得E-2签证，配偶可工作，子女可就读美国公立学校。';
+
+    // 华侨生
+    var huaqiaoStatus='<span class="g">✅ 符合——土耳其护照可作华侨生联考资格。</span>';
+    var huaqiaoDetail='孩子持土耳其护照，在报名前2年内实际居住满18个月（建议高中阶段赴土耳其或第三国就读），即可参加华侨生联考，以相对较低分数进入985/211高校。';
+
+    // Exit strategy
+    var exitDetail='';
+    if(pathIsReal){exitDetail='3年后出售房产，回收$40万本金（按当前政策，3年持有期满后可自由出售给任何买家，不受CBI限制）。房产增值部分为额外收益。';}
+    else if(pathIsDeposit){exitDetail='3年后可取回$50万本金+利息（利率按土耳其央行政策）。';}
+    else if(pathIsBonds){exitDetail='3年后债券到期可赎回$50万本金+票面利息。';}
+    else if(pathIsFund){exitDetail='3年后基金份额可赎回，收回投资本金（具体收益取决于基金表现）。';}
+    else if(pathIsJobs){exitDetail='无固定退出周期——企业经营产生的利润为回报，退出可通过转让公司实现。';}
+
+    // Timeline
+    var timelineObj={'urgent':'6-8个月审批周期可满足紧急需求。建议立即启动材料准备（护照、出生证明、结婚证等公证+翻译）。','normal':'6-8个月审批周期符合您的时间预期。可按正常节奏推进。','flexible':'6-8个月审批周期在您的时间范围内，可从容准备。'};
+    var timelineText=timelineObj[urgency]||'6-8个月审批周期。';
+
+    // Family
+    var familyDetail='配偶及18岁以下子女自动随行入籍。';
+    if(hasKids)familyDetail+=' 您有18岁以下子女，可一同获得土耳其公民身份。';
+    if(adultchild==='yes')familyDetail+=' ⚠️ 18岁以上子女需单独申请（如留学签证/工作签证），不能随行入籍。';
+    if(marital==='single')familyDetail='单身申请人，主申请人一人入籍。未来结婚后配偶可申请入籍。';
+
+    // Health
+    var healthNote=health==='issue'?'<p style="color:#c2410c;font-size:13px;margin:4px 0">⚠️ 健康状况选了"有需要说明的情况"，建议提前咨询律师评估是否影响申请。</p>':'';
+
+    // Build results
+    var h='<div class="rs-card" style="border-left:4px solid '+statusColor+'"><h3>📊 评估结果：'+statusLabel+'</h3>'+healthNote;
+    h+='<p style="font-size:14px;margin:8px 0">土耳其投资入籍（CBI）—— <strong>'+pathLabel+'（'+pathAmount+'）</strong></p>';
+
+    if(status==='qualified'){
+      h+='<p style="font-size:14px;color:#166534;margin-bottom:6px">🎉 您的基本条件符合土耳其CBI要求。</p>';
+    }else if(status==='conditional'){
+      h+='<p style="font-size:14px;color:#92400e;margin-bottom:6px">⚠️ 基本条件具备，但有部分因素需要进一步确认。</p>';
+    }else{
+      h+='<p style="font-size:14px;color:#991b1b;margin-bottom:6px">❌ 当前条件暂不满足土耳其CBI的基本投资门槛。</p>';
+    }
+
+    h+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">';
+    h+='<span class="tag tg">无语言要求</span><span class="tag tg">无学历要求</span><span class="tag tg">无移民监</span>';
+    h+='<span class="tag tg">允许双重国籍</span><span class="tag tg">6-8个月获批</span><span class="tag tg">美E-2条约国</span>';
+    h+='<span class="tag tg">3年可退出</span>';
+    if(hasKids)h+='<span class="tag tg">子女随行入籍</span>';
+    h+='</div></div>';
+
+    // Detailed analysis
+    h+='<div class="rs-card"><h3 style="font-size:16px;margin-bottom:14px;color:#8b1e1e">📋 逐项分析</h3>';
+
+    // 1. Investment capability
+    var invStatus=nwOk?'q':'n';
+    var invDetail=nwOk?'<span class="g">✅ 净资产满足投资门槛</span><br>所选路径：'+pathLabel+'，需'+pathAmount+'。您的净资产水平充足。':'<span class="o">❌ 净资产不足</span><br>所选路径需'+pathAmount+'，但您当前净资产不足。建议考虑资金更少的替代方案（如瓦努阿图$13万、多米尼克$20万）。';
+    h+='<div class="prog '+(invStatus==='q'?'el':'no')+'"><h4>投资能力</h4><span class="st st-'+invStatus+'">'+(invStatus==='q'?'✅ 满足':'❌ 不满足')+'</span><div class="d">'+invDetail+'</div></div>';
+
+    // 2. Criminal record
+    h+='<div class="prog el"><h4>无犯罪记录</h4><span class="st st-q">✅ 满足</span><div class="d"><span class="g">✅ 无犯罪记录</span><br>土耳其入籍要求提供无犯罪记录证明，通常需公证+翻译（海牙认证）。</div></div>';
+
+    // 3. Investment path
+    var pathStatus=pathIsReal?'q':'m';
+    h+='<div class="prog '+(pathStatus==='q'?'el':'mb')+'"><h4>投资路径</h4><span class="st st-'+pathStatus+'">'+(pathStatus==='q'?'✅ 最优':'⚠️ 可选')+'</span><div class="d">';
+    h+='<span class="'+(pathIsReal?'g':'o')+'">'+pathLabel+' — '+pathAmount+'</span><br>'+pathDetail;
+    if(!pathIsReal)h+='<br><span style="font-size:12px;color:#888">💡 温馨提示：房地产投资（$40万）是最主流路径，成本最低且可3年后出售退出。银行存款/债券/基金门槛为$50万且资金锁定3年。';
+    h+='</div></div>';
+
+    // 4. E-2 to US
+    h+='<div class="prog el"><h4>🇺🇸 美国E-2签证通道</h4><span class="st st-q">✅ E-2条约国</span><div class="d">'+e2Detail+'</div></div>';
+
+    // 5. 华侨生联考
+    h+='<div class="prog el"><h4>🎓 华侨生联考</h4><span class="st st-q">✅ 可规划</span><div class="d">'+huaqiaoDetail+'</div></div>';
+
+    // 6. Exit strategy
+    h+='<div class="prog '+(pathIsReal?'el':'mb')+'"><h4>💵 退出机制</h4><span class="st st-'+(pathIsReal?'q':'m')+'">'+(pathIsReal?'✅ 明确可行':'⚠️ 可退出')+'</span><div class="d">'+exitDetail+'</div></div>';
+
+    // 7. Timeline
+    h+='<div class="prog el"><h4>⏱️ 审批时间</h4><span class="st st-q">✅ 6-8个月</span><div class="d">'+timelineText+'<br>无居住要求，全程可在海外办理（无需入境土耳其）。</div></div>';
+
+    // 8. Family
+    h+='<div class="prog el"><h4>👨‍👩‍👧‍👦 家庭成员</h4><span class="st st-q">✅ 配偶+未成年子女随行</span><div class="d">'+familyDetail+'</div></div>';
+
+    // 9. Dual citizenship
+    h+='<div class="prog el"><h4>📘 双重国籍</h4><span class="st st-q">✅ 允许</span><div class="d"><span class="g">✅ 土耳其承认双重国籍</span>，无需放弃原国籍。<br><span style="font-size:12px;color:#888">⚠️ 注意：如您为中国籍，中国不承认双重国籍。实际操作中可持有土耳其护照但不主动申报，或根据个人情况做出选择。</span></div></div>';
+
+    // 10. Source of funds
+    var fundStatus=fundsource==='yes'?'q':(fundsource==='partial'?'m':'n');
+    h+='<div class="prog '+(fundStatus==='q'?'el':(fundStatus==='m'?'mb':'no'))+'"><h4>💰 资金来源</h4><span class="st st-'+fundStatus+'">'+(fundStatus==='q'?'✅ 可提供':'⚠️ 需完善')+'</span><div class="d">'+(fundsource==='yes'?'<span class="g">✅ 可合法解释资金来源</span><br>土耳其CBI对资金来源审查较宽松（相比欧美），但仍建议准备基础证明材料。':'<span class="o">⚠️ 资金来源说明需完善</span><br>建议在律师指导下整理资金流水、资产证明等材料。土耳其CBI对资金审查相对宽松，部分情况可接受。')+'</div></div>';
+
+    h+='</div>';
+
+    // Comparison table
+    h+='<div class="rs-card"><h3 style="font-size:16px;margin-bottom:14px;color:#8b1e1e">📊 投资路径对比</h3>';
+    h+='<table class="cm"><tr><th>投资路径</th><th>最低金额</th><th>持有期</th><th>退出方式</th><th>适合人群</th></tr>';
+    h+='<tr'+(pathIsReal?' style="background:#f0fdf4"':'')+'><td>🏠 房地产</td><td><strong>$40万</strong></td><td>3年</td><td>出售房产</td><td>主流选择</td></tr>';
+    h+='<tr'+(pathIsDeposit?' style="background:#f0fdf4"':'')+'><td>🏦 银行存款</td><td>$50万</td><td>3年</td><td>取回存款+利息</td><td>偏好现金</td></tr>';
+    h+='<tr'+(pathIsBonds?' style="background:#f0fdf4"':'')+'><td>📜 政府债券</td><td>$50万</td><td>3年</td><td>到期赎回</td><td>偏好固收</td></tr>';
+    h+='<tr'+(pathIsFund?' style="background:#f0fdf4"':'')+'><td>💰 房地产基金</td><td>$50万</td><td>3年</td><td>赎回份额</td><td>间接投资</td></tr>';
+    h+='<tr'+(pathIsJobs?' style="background:#f0fdf4"':'')+'><td>🏭 创造就业</td><td>50岗位</td><td>—</td><td>企业利润</td><td>企业家</td></tr>';
+    h+='</table></div>';
+
+    // Key program features
+    h+='<div class="rs-card"><h3 style="font-size:16px;margin-bottom:14px;color:#8b1e1e">🏷️ 土耳其护照权益速览</h3>';
+    h+='<table class="cm"><tr><th>维度</th><th>详情</th></tr>';
+    h+='<tr><td>免签国家</td><td>110-120国（日本、新加坡、韩国、香港等）<br><span style="color:#c2410c">不含申根区</span></td></tr>';
+    h+='<tr><td>美国E-2</td><td>✅ 可申请E-2投资者签证赴美</td></tr>';
+    h+='<tr><td>英国跳板</td><td>土耳其企业家签证→5年转英国永居</td></tr>';
+    h+='<tr><td>双重国籍</td><td>✅ 土耳其允许，无需放弃原国籍</td></tr>';
+    h+='<tr><td>居住要求</td><td>❌ 无移民监，全程无需居住</td></tr>';
+    h+='<tr><td>语言/学历</td><td>❌ 无任何要求</td></tr>';
+    h+='<tr><td>税务优势</td><td>2026年新政：海外投资者享20年免税期</td></tr>';
+    h+='<tr><td>退出机制</td><td>3年后出售资产回收本金</td></tr>';
+    h+='</table></div>';
+
+    // Recommendation
+    var recText='';
+    if(status==='qualified'&&pathIsReal){
+      recText='<strong>推荐方案」</strong>土耳其$40万房地产投资入籍。您的基本条件完全满足，可选择伊斯坦布尔、安塔利亚等热门城市房产。总投资$40万起，约6-8个月获得护照。<br><br><strong>关键优势：</strong>① 3年后出售房产回收本金；② 美国E-2签证通道；③ 子女华侨生联考资格；④ 无居住/语言/学历要求。';
+    }else if(status==='qualified'){
+      recText='<strong>推荐方案」</strong>您倾向的'+pathLabel+'路径条件满足。不过我们建议同时评估房地产投资路径（$40万），作为成本更低的替代方案。';
+    }else if(status==='conditional'){
+      recText='<strong>有条件推荐」</strong>您的投资能力基本满足，但建议：'+(path!=='realestate'?'考虑房地产投资路径（$40万）以获得最低投资门槛。':'')+(fundsource!=='yes'?'提前准备资金来源证明材料。':'');
+    }else{
+      recText='<strong>替代建议」</strong>如当前预算不足$40万，可考虑：<br>· 瓦努阿图CBI：单人$13万起，30-60天获批<br>· 多米尼克CBI：$20万起，免签140+国（含申根）<br>· 格鲁吉亚居留：$10万起购房，1%所得税';
+    }
+
+    h+='<div class="hb g">💡 '+recText+'</div>';
+
+    // Disclaimers
+    h+='<div class="hb w">⚠️ <strong>重要提示</strong><br>① 本评估由AI基于问卷自动生成，仅供参考，不构成法律意见。<br>② 土耳其CBI政策可能随时调整（2022年已从$25万提至$40万），建议尽快启动。<br>③ 中国籍申请人需注意中国不承认双重国籍的法律风险。<br>④ 实际审批以土耳其内政部人口与公民事务省为准。<br>⑤ 建议聘请持牌移民律师/机构办理，确保合规。</div>';
+
+    h+='<button class="btn-sm" onclick="goBack()" style="margin:8px 0">✏️ 返回修改</button>';
+
+    D.getElementById('results').innerHTML=h;
+  }
+})();
+</script>
+</body>
+</html>
