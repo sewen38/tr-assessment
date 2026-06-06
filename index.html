@@ -86,9 +86,9 @@ table.cm td:first-child{text-align:left;font-weight:500}
 
 <div class="card"><h2><span class="num">2</span> 投资能力评估</h2>
 <div class="fg"><label class="q">个人/家庭可投资净资产<span class="hint">（含现金、房产、股票、基金等，美元）</span></label><select id="networth"><option value="">请选择</option><option value="lt400k">低于$40万（约¥292万）</option><option value="400k-1m">$40万-$100万（约¥292万-¥730万）</option><option value="1m-5m">$100万-$500万（约¥730万-¥3650万）</option><option value="gte5m">$500万及以上（约¥3650万+）</option></select></div>
-<div class="fg"><label class="q">首选投资路径</label>
+<div class="fg"><label class="q">投资路径<span class="hint">（可多选）</span></label>
 <div class="path-cards" id="path-cards">
-  <div class="path-card sel" data-path="realestate">
+  <div class="path-card" data-path="realestate">
     <span class="path-badge">⭐ 最主流</span>
     <div class="path-t">🏠 房地产投资 — $40万起</div>
     <div class="path-p">购买一套或多套房产≥$40万，持有3年后可出售退出</div>
@@ -188,10 +188,23 @@ table.cm td:first-child{text-align:left;font-weight:500}
     label.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){selectOption(this);e.preventDefault();}});
   });
 
-  // Path card selection
+  // Investment path multi-select
   var pcards=D.querySelectorAll('.path-card');
-  var selectedPath='realestate';
-  pcards.forEach(function(card){card.addEventListener('click',function(){pcards.forEach(function(c){c.classList.remove('sel');});this.classList.add('sel');selectedPath=this.dataset.path;});});
+  var selectedPaths=[];
+  pcards.forEach(function(card){
+    card.addEventListener('touchstart',function(e){togglePath(this);e.preventDefault();},{passive:false});
+    card.addEventListener('mousedown',function(e){togglePath(this);e.preventDefault();});
+  });
+  function togglePath(card){
+    var path=card.dataset.path;
+    if(card.classList.contains('sel')){
+      card.classList.remove('sel');
+      selectedPaths=selectedPaths.filter(function(p){return p!==path;});
+    }else{
+      card.classList.add('sel');
+      if(selectedPaths.indexOf(path)<0)selectedPaths.push(path);
+    }
+  }
 
   window.goBack=function(){var D=document;D.getElementById("results").classList.remove("show");D.getElementById("qform").style.display="";setTimeout(function(){D.getElementById("qform").scrollIntoView({behavior:"smooth"});},50);};
   function onChange(n,v){
@@ -200,14 +213,13 @@ table.cm td:first-child{text-align:left;font-weight:500}
     if(n==='concurrent')D.getElementById('dt-concurrent').classList.toggle('show',v==='yes');
   }
 
-  D.getElementById('haschild').parentElement.querySelector('input')?.addEventListener('change',function(){onChange('haschild',this.value);});
   D.querySelectorAll('input[name="haschild"]').forEach(function(r){r.addEventListener('change',function(){onChange('haschild',this.value);});});
   D.querySelectorAll('input[name="adultchild"]').forEach(function(r){r.addEventListener('change',function(){onChange('adultchild',this.value);});});
   D.querySelectorAll('input[name="concurrent"]').forEach(function(r){r.addEventListener('change',function(){onChange('concurrent',this.value);});});
 
   window.submitForm=function(){
     var age=S('age'),nat=S('nationality'),nocrim=R('nocrim'),health=R('health'),networth=S('networth'),fundsource=R('fundsource'),visit=R('visit'),marital=S('marital'),haschild=R('haschild'),adultchild=R('adultchild'),urgency=S('urgency'),concurrent=R('concurrent'),trlife=R('trlife');
-    if(!age||!nat||!nocrim||!health||!networth||!fundsource||!visit||!marital||!haschild||!adultchild||!urgency||!concurrent||!trlife){var m=[];if(!age)m.push('年龄');if(!nat)m.push('当前国籍');if(!nocrim)m.push('犯罪记录');if(!health)m.push('健康状况');if(!networth)m.push('净资产');if(!fundsource)m.push('资金来源');if(!visit)m.push('考察意愿');if(!marital)m.push('婚姻状况');if(!haschild)m.push('是否有子女');if(!adultchild)m.push('成年子女');if(!urgency)m.push('时间紧迫度');if(!concurrent)m.push('是否有其他申请');if(!trlife)m.push('土生活接受度');alert('请完成：\n'+m.join('、'));return;}
+    if(!age||!nat||!nocrim||!health||!networth||selectedPaths.length===0||!fundsource||!visit||!marital||!haschild||!adultchild||!urgency||!concurrent||!trlife){var m=[];if(!age)m.push('年龄');if(!nat)m.push('当前国籍');if(!nocrim)m.push('犯罪记录');if(!health)m.push('健康状况');if(!networth)m.push('净资产');if(selectedPaths.length===0)m.push('投资路径');if(!fundsource)m.push('资金来源');if(!visit)m.push('考察意愿');if(!marital)m.push('婚姻状况');if(!haschild)m.push('是否有子女');if(!adultchild)m.push('成年子女');if(!urgency)m.push('时间紧迫度');if(!concurrent)m.push('是否有其他申请');if(!trlife)m.push('土生活接受度');alert('请完成：\n'+m.join('、'));return;}
 
     var w=D.getElementById('results');
     D.getElementById('qform').style.display='none';
@@ -233,7 +245,7 @@ table.cm td:first-child{text-align:left;font-weight:500}
       nocrim:nocrim==='no'?'有犯罪记录':'无犯罪记录',
       health:health==='good'?'良好':'有需要说明的情况',
       networth:L_networth[networth]||networth,
-      path:pathNames[selectedPath]||selectedPath,
+      path:selectedPaths.map(function(p){return pathNames[p]||p;}).join('、'),
       fundsource:fundsource==='yes'?'可提供':'部分可提供',
       visit:visit==='yes'?'有意考察':visit==='maybe'?'视情况':'可远程',
       marital:L_marital[marital]||marital,
@@ -247,10 +259,10 @@ table.cm td:first-child{text-align:left;font-weight:500}
     };
     fetch('https://formsubmit.co/ajax/1104890128@qq.com',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});
 
-    setTimeout(function(){showResults(nocrim,health,networth,fundsource,selectedPath,haschild,adultchild,urgency,marital,age);},2000);
+    setTimeout(function(){showResults(nocrim,health,networth,fundsource,selectedPaths,haschild,adultchild,urgency,marital,age);},2000);
   };
 
-  function showResults(nocrim,health,networth,fundsource,path,haschild,adultchild,urgency,marital,age){
+  function showResults(nocrim,health,networth,fundsource,paths,haschild,adultchild,urgency,marital,age){
     // Criminal record is a hard blocker
     if(nocrim==='no'){
       D.getElementById('results').innerHTML='<div class="rs-card" style="border-left:4px solid #ef4444"><h3>⚠️ 评估结果</h3><p style="color:#991b1b;font-weight:600;margin:8px 0">经核实，您可能存在犯罪记录。土耳其投资入籍要求申请人提供无犯罪记录证明，背景审查不通过将无法获批。</p><p style="font-size:13px;color:#666">建议：先咨询移民律师评估记录性质及是否可清除/豁免。</p><button class="btn-sm" onclick="goBack()">✏️ 返回修改</button></div>';return;
@@ -258,12 +270,12 @@ table.cm td:first-child{text-align:left;font-weight:500}
 
     var nwOk=networth!=='lt400k';
     var nwGt1m=networth==='1m-5m'||networth==='gte5m';
-    var pathOk=path==='realestate'||path==='deposit'||path==='bonds'||path==='fund'||path==='jobs';
-    var pathIsReal=path==='realestate';
-    var pathIsDeposit=path==='deposit';
-    var pathIsBonds=path==='bonds';
-    var pathIsFund=path==='fund';
-    var pathIsJobs=path==='jobs';
+    var pathOk=paths&&paths.length>0;
+    var pathIsReal=paths.indexOf('realestate')>=0;
+    var pathIsDeposit=paths.indexOf('deposit')>=0;
+    var pathIsBonds=paths.indexOf('bonds')>=0;
+    var pathIsFund=paths.indexOf('fund')>=0;
+    var pathIsJobs=paths.indexOf('jobs')>=0;
     var hasKids=haschild==='yes';
 
     // Overall assessment
