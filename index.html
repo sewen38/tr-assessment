@@ -209,35 +209,14 @@ table.cm td:first-child{text-align:left;font-weight:500}
   }
 
   window.goBack=function(){var D=document;D.getElementById("results").classList.remove("show");D.getElementById("qform").style.display="";setTimeout(function(){D.getElementById("qform").scrollIntoView({behavior:"smooth"});},50);};
+window.goExecPlan=function(){if(!window._selectedSolution){alert("请先选择一个方案");return;}var u=new URL(window.location.href);var batch=u.searchParams.get("batch")||"";var issue=u.searchParams.get("issue")||"";if(batch==="1"&&issue){try{var bd=JSON.parse(localStorage.getItem("***")||"{}");bd[issue]=bd[issue]||{};bd[issue]["tr"]={solution:window._selectedSolution||"",project:window._selectedProject||"",ts:Date.now()};localStorage.setItem("***",JSON.stringify(bd));}catch(e){}var retUrl=u.searchParams.get("return")||"https://sewen38.github.io/family-plan/?batch=1&issue="+issue;window.location.href=retUrl;return;}window.location.href="https://sewen38.github.io/tr-assessment/exec.html?issue="+issue+"&solution="+(window._selectedSolution||"")+"&project="+(window._selectedProject||"");};
 
   window.goPrevStage=function(){
     var u=new URL(window.location.href);
     var ret=u.searchParams.get('return')||'';
     var batch=u.searchParams.get('batch')||'';
     var issue=u.searchParams.get('issue')||'';
-    if(batch==='1'&&issue){
-      var base=ret||'https://sewen38.github.io/family-plan/';
-      var sep=base.indexOf('?')>=0?'&':'?';
-      window.location.href=base+sep+'batch=1&issue='+issue;
-    }else if(ret){
-      window.location.href=ret;
-    }else{
-      history.length>1?history.back():goBack();
-    }
-  };
-  window.selectSolution=function(code){
-    document.querySelectorAll('.choice-card').forEach(function(x){x.classList.remove('sel')});
-    var el=document.querySelector('[data-solution="'+code+'"]'); if(el)el.classList.add('sel');
-    document.querySelectorAll('.project-list').forEach(function(x){x.classList.remove('show')});
-    var list=document.getElementById('projects-'+code); if(list)list.classList.add('show');
-    window._selectedSolution=code;
-  };
-  window.selectProject=function(el,project){
-    document.querySelectorAll('.project-opt').forEach(function(x){x.classList.remove('sel')});
-    el.classList.add('sel'); window._selectedProject=project;
-  };
-  window.goExecPlan=function(){
-    if(!window._selectedSolution){alert('请先选择一个可执行/可选方案');return;}
+    if(batch==='1'&&issue){try{var bd=JSON.parse(localStorage.getItem('***')||'{}');bd[issue]=bd[issue]||{};bd[issue]['tr']={solution:window._selectedSolution||'',project:window._selectedProject||'',ts:Date.now()};localStorage.setItem('***',JSON.stringify(bd));}catch(e){}var retUrl=u.searchParams.get('return')||'https://sewen38.github.io/family-plan/?batch=1&issue='+issue;window.location.href=retUrl;return;}
     if(!window._selectedProject){alert('请先选择具体项目');return;}
     var u=new URL(window.location.href);
     var batch=u.searchParams.get('batch')||'';
