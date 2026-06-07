@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>执行策划案 · 下载与佣金明细</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',Arial,sans-serif;background:#f5f6f8;color:#1f2937;line-height:1.65;padding-bottom:32px}.wrap{max-width:760px;margin:0 auto}.hero{background:linear-gradient(135deg,#8b1e1e,#c9302c);color:#fff;padding:30px 18px 24px;text-align:center}.hero h1{font-size:22px;margin-bottom:6px}.hero p{font-size:13px;opacity:.88}.card{background:#fff;border-radius:16px;margin:14px 12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.05)}.card h2{font-size:17px;color:#8b1e1e;margin-bottom:10px}.muted{font-size:13px;color:#667085}.pill{display:inline-block;background:#fef3c7;color:#92400e;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;margin:3px}.summary{background:#fff7ed;border-left:4px solid #f97316;border-radius:10px;padding:12px;margin:10px 0;font-size:13px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.btn{flex:1;min-width:130px;border:0;border-radius:10px;padding:13px 14px;font-weight:800;font-size:15px;cursor:pointer;text-align:center;text-decoration:none}.primary{background:linear-gradient(135deg,#8b1e1e,#c9302c);color:#fff}.secondary{background:#eef1f5;color:#555}.input-row{display:flex;gap:8px;margin-top:12px}.input-row input{flex:1;border:1.5px solid #ddd;border-radius:10px;padding:12px;font-size:16px}.input-row button{border:0;border-radius:10px;padding:0 18px;background:#8b1e1e;color:#fff;font-weight:800}.commission{display:none}.commission.show{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.item{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px}.item b{display:block;color:#8b1e1e;font-size:15px}.item span{font-size:12px;color:#667085}.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;border-radius:999px;padding:9px 15px;font-size:13px;opacity:0;transition:.2s}.toast.show{opacity:1}@media(max-width:520px){.grid{grid-template-columns:1fr}.hero h1{font-size:20px}.card{margin:10px;padding:15px}.actions{flex-direction:column}.btn{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero"><h1>执行策划案已生成</h1><p>下载文档后可继续输入密码查看佣金明细</p></div>
+  <div class="card">
+    <h2>📄 执行策划案下载</h2>
+    <div class="muted" id="meta">正在生成执行策划案...</div>
+    <div class="summary" id="summary"></div>
+    <div><span class="pill" id="countryPill">土耳其</span><span class="pill" id="projectPill">基金投资入籍</span></div>
+    <div class="actions">
+      <a id="downloadBtn" class="btn primary" href="#" download="土耳其基金移民执行策划案.md">下载执行策划案</a>
+      <button class="btn secondary" onclick="goBackStage()">返回上一阶段</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>🔐 佣金明细查看</h2>
+    <p class="muted">请输入授权密码后查看佣金金额、结佣周期、批次和对接人信息。</p>
+    <div class="input-row"><input id="pwd" type="password" placeholder="请输入密码" inputmode="numeric"><button onclick="checkPwd()">确认</button></div>
+  </div>
+  <div class="card commission" id="commission">
+    <h2>💰 佣金明细</h2>
+    <div class="grid">
+      <div class="item"><b>8万美金</b><span>佣金金额</span></div>
+      <div class="item"><b>1个月</b><span>结佣周期</span></div>
+      <div class="item"><b>2次</b><span>结佣批次</span></div>
+      <div class="item"><b>4万美金</b><span>第一批次结佣金额</span></div>
+      <div class="item"><b>4万美金</b><span>第二批次结佣金额</span></div>
+      <div class="item"><b>张三</b><span>结佣对接人名称</span></div>
+      <div class="item"><b>12345678911</b><span>结佣对接人联系方式</span></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+function q(k){return new URL(location.href).searchParams.get(k)||''}
+function toast(t){var x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(function(){x.classList.remove('show')},1600)}
+var projectMap={
+ 'tr-fund-cbi':'土耳其房地产投资基金入籍',
+ 'tr-fund-e2':'土耳其基金入籍 + 美国E-2后续规划',
+ 'tr-realestate-cbi':'土耳其购房入籍',
+ 'tr-realestate-education':'土耳其购房入籍 + 子女教育/华侨生规划',
+ 'tr-deposit-cbi':'土耳其银行存款入籍',
+ 'tr-bonds-cbi':'土耳其政府债券入籍'
+};
+function buildPlan(){
+ var issue=q('issue')||'未关联';var solution=q('solution')||'A';var project=q('project')||'tr-fund-cbi';var projectName=projectMap[project]||project;
+ document.getElementById('meta').textContent='来源：评估结果 Issue #'+issue+' · 已选方案 '+solution;
+ document.getElementById('projectPill').textContent=projectName;
+ document.getElementById('summary').innerHTML='本执行策划案按客户交付版模板生成，包含客户信息确认、核心策略、合规清理、资金路径、投资使用建议、财富架构、税务分析、身份路径、教育与福利规划、预算与三方费用、材料清单、办理流程图、风险声明、法律依据和法案相互影响总结。';
+ var md='# 土耳其基金投资入籍执行策划案\n\n> 文档版本：客户交付版 · 自动生成测试版\n> 来源：Issue #'+issue+' / 方案 '+solution+' / '+projectName+'\n\n## 摘要结论\n\n本方案建议以“'+projectName+'”作为下一阶段执行路径。核心目标不是单纯取得身份，而是在资金合规、税务边界、中国国籍边界和后续全球身份使用之间建立可执行路径。\n\n## 一、核心策略\n\n- 事业国：以中国现有企业经营为基础。\n- 居住国：以中国为主，土耳其作为功能性身份配置。\n- 福利国/身份工具：土耳其护照用于境外金融、签证便利、E-2可选衔接。\n\n## 二、执行路径\n\n| 阶段 | 动作 | 交付物 |\n|---|---|---|\n| 1 | 客户信息与资金来源复核 | 风险清单 |\n| 2 | 项目文件、费用和材料清单确认 | 签约材料包 |\n| 3 | 资金路径与付款安排 | 付款凭证 |\n| 4 | 递交居留/入籍申请 | 回执与补件记录 |\n| 5 | 获批领取身份文件 | 土耳其护照/身份证明 |\n\n## 三、预算与费用\n\n- 投资款：按所选项目执行。\n- 默认基金路径：50万美元基金认购，锁定期以基金文件为准。\n- 律师费、官方费用、公证认证、翻译、保险、服务费按正式合同核算。\n\n## 四、材料清单\n\n- 主申请人护照、照片、身份证明、出生/婚姻材料。\n- 配偶及18岁以下子女随行材料。\n- 资金来源证明、银行流水、付款凭证。\n- POA授权、基金/房产/存款/债券项目文件。\n\n## 五、办理流程图\n\n客户确认方案 → 律师/项目方尽调 → 准备材料 → 签署文件 → 付款 → 项目确认 → 递交居留 → 递交入籍 → 政府审批 → 身份获批 → 建立退出提醒。\n\n## 六、重要风险声明\n\n- 中国不承认双重国籍，第三国护照不得用于中国出入境。\n- 土耳其允许双重国籍不等于中国承认双重国籍。\n- E-2不是绿卡，需真实美国商业投资和经营。\n- 投资退出受市场、汇率、基金/房产流动性影响，不保证本金和收益。\n- 本方案不构成法律、税务或投资建议，落地前须由律师和税务师确认。\n\n## 七、法律依据\n\n- 土耳其《公民法》Law No.5901 第12条。\n- 《土耳其公民法实施条例》第20条及第20条第2款相关投资项。\n- 土耳其资本市场委员会 CMB/SPK 房地产投资基金监管规则。\n- 美国 INA 101(a)(15)(E) 与 9 FAM 402.9（如衔接E-2）。\n- 《中华人民共和国国籍法》第3条、第9条。\n';
+ var blob=new Blob([md],{type:'text/markdown;charset=utf-8'});var url=URL.createObjectURL(blob);var a=document.getElementById('downloadBtn');a.href=url;a.download='土耳其执行策划案-'+projectName+'.md';
+}
+function checkPwd(){if(document.getElementById('pwd').value==='888888'){document.getElementById('commission').classList.add('show');document.getElementById('commission').scrollIntoView({behavior:'smooth'});}else{toast('密码错误，请重试')}}
+function goBackStage(){var issue=q('issue');location.href='https://sewen38.github.io/tr-assessment/?issue='+issue+'&country=tr&program=fund'}
+buildPlan();
+</script>
+</body>
+</html>

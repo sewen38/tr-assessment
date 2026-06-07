@@ -230,7 +230,7 @@ table.cm td:first-child{text-align:left;font-weight:500}
     if(!window._selectedProject){alert('请先选择具体项目');return;}
     var u=new URL(window.location.href);var issue=u.searchParams.get('issue')||'';
     var params=new URLSearchParams({issue:issue,country:'tr',solution:window._selectedSolution,project:window._selectedProject,stage:'exec'});
-    window.location.href='https://sewen38.github.io/family-plan-exec-demo/?'+params.toString();
+    window.location.href='https://sewen38.github.io/tr-assessment/exec.html?'+params.toString();
   };
 
   function onChange(n,v){
