@@ -69,6 +69,8 @@ table.cm td:first-child{text-align:left;font-weight:500}
 .path-card .path-badge{float:right;font-size:10px;background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:10px;font-weight:600}
 
 @media(max-width:400px){.radio-row .ropt{min-width:60px;padding:8px 12px;font-size:13px}.card{padding:18px 14px;margin:10px 8px}.header h1{font-size:19px}}
+
+.flow-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.flow-actions button{flex:1;min-width:120px;border:0;border-radius:10px;padding:12px;font-size:14px;font-weight:800;cursor:pointer}.flow-primary{background:linear-gradient(135deg,#8b1e1e,#c9302c);color:#fff}.flow-secondary{background:#eef1f5;color:#555}.choice-grid{display:grid;gap:10px}.choice-card{border:2px solid #e5e7eb;border-radius:12px;padding:13px;background:#fafafa;cursor:pointer}.choice-card.sel{border-color:#c9302c;background:#fef5f5}.choice-card h4{font-size:15px;color:#8b1e1e;margin-bottom:4px}.choice-card p{font-size:12px;color:#666}.project-list{display:none;margin-top:12px}.project-list.show{display:block}.project-opt{border:1.5px solid #e5e7eb;border-radius:10px;padding:11px;margin-bottom:8px;background:#fff;cursor:pointer}.project-opt.sel{border-color:#22c55e;background:#f0fdf4}.stage-hint{font-size:12px;color:#888;margin-top:6px}
 </style>
 </head>
 <body>
@@ -207,6 +209,30 @@ table.cm td:first-child{text-align:left;font-weight:500}
   }
 
   window.goBack=function(){var D=document;D.getElementById("results").classList.remove("show");D.getElementById("qform").style.display="";setTimeout(function(){D.getElementById("qform").scrollIntoView({behavior:"smooth"});},50);};
+
+  window.goPrevStage=function(){
+    var u=new URL(window.location.href);var ret=u.searchParams.get('return')||'';
+    if(ret){window.location.href=ret;}else{history.length>1?history.back():goBack();}
+  };
+  window.selectSolution=function(code){
+    document.querySelectorAll('.choice-card').forEach(function(x){x.classList.remove('sel')});
+    var el=document.querySelector('[data-solution="'+code+'"]'); if(el)el.classList.add('sel');
+    document.querySelectorAll('.project-list').forEach(function(x){x.classList.remove('show')});
+    var list=document.getElementById('projects-'+code); if(list)list.classList.add('show');
+    window._selectedSolution=code;
+  };
+  window.selectProject=function(el,project){
+    document.querySelectorAll('.project-opt').forEach(function(x){x.classList.remove('sel')});
+    el.classList.add('sel'); window._selectedProject=project;
+  };
+  window.goExecPlan=function(){
+    if(!window._selectedSolution){alert('请先选择一个可执行/可选方案');return;}
+    if(!window._selectedProject){alert('请先选择具体项目');return;}
+    var u=new URL(window.location.href);var issue=u.searchParams.get('issue')||'';
+    var params=new URLSearchParams({issue:issue,country:'tr',solution:window._selectedSolution,project:window._selectedProject,stage:'exec'});
+    window.location.href='https://sewen38.github.io/family-plan-exec-demo/?'+params.toString();
+  };
+
   function onChange(n,v){
     if(n==='haschild')D.getElementById('dt-child').classList.toggle('show',v==='yes');
     if(n==='adultchild')D.getElementById('dt-adultchild').classList.toggle('show',v==='yes');
@@ -265,7 +291,7 @@ table.cm td:first-child{text-align:left;font-weight:500}
   function showResults(nocrim,health,networth,fundsource,paths,haschild,adultchild,urgency,marital,age){
     // Criminal record is a hard blocker
     if(nocrim==='no'){
-      D.getElementById('results').innerHTML='<div class="rs-card" style="border-left:4px solid #ef4444"><h3>⚠️ 评估结果</h3><p style="color:#991b1b;font-weight:600;margin:8px 0">经核实，您可能存在犯罪记录。土耳其投资入籍要求申请人提供无犯罪记录证明，背景审查不通过将无法获批。</p><p style="font-size:13px;color:#666">建议：先咨询移民律师评估记录性质及是否可清除/豁免。</p><button class="btn-sm" onclick="goBack()">✏️ 返回修改</button></div>';return;
+      D.getElementById('results').innerHTML='<div class="rs-card" style="border-left:4px solid #ef4444"><h3>⚠️ 评估结果</h3><p style="color:#991b1b;font-weight:600;margin:8px 0">经核实，您可能存在犯罪记录。土耳其投资入籍要求申请人提供无犯罪记录证明，背景审查不通过将无法获批。</p><p style="font-size:13px;color:#666">建议：先咨询移民律师评估记录性质及是否可清除/豁免。</p><div class="flow-actions"><button class="flow-secondary" onclick="goPrevStage()">返回上一阶段</button><button class="flow-secondary" onclick="goBack()">返回修改</button></div></div>';return;
     }
 
     var nwOk=networth!=='lt400k';
@@ -435,7 +461,17 @@ table.cm td:first-child{text-align:left;font-weight:500}
     // Disclaimers
     h+='<div class="hb w">⚠️ <strong>重要提示</strong><br>① 本评估由AI基于问卷自动生成，仅供参考，不构成法律意见。<br>② 土耳其CBI政策可能随时调整（2022年已从$25万提至$40万），建议尽快启动。<br>③ 中国籍申请人需注意中国不承认双重国籍的法律风险。<br>④ 实际审批以土耳其内政部人口与公民事务省为准。<br>⑤ 建议聘请持牌移民律师/机构办理，确保合规。</div>';
 
-    h+='<button class="btn-sm" onclick="goBack()" style="margin:8px 0">✏️ 返回修改</button>';
+    h+='<div class="rs-card"><h3 style="font-size:16px;margin-bottom:12px;color:#8b1e1e">✅ 请选择下一阶段执行方案</h3>';
+    h+='<div class="choice-grid">';
+    h+='<div class="choice-card" data-solution="A" onclick="selectSolution(\'A\')"><h4>方案A：土耳其房地产基金入籍</h4><p>适合偏好标准化金融产品、希望减少选房复杂度的客户。</p></div>';
+    h+='<div class="choice-card" data-solution="B" onclick="selectSolution(\'B\')"><h4>方案B：土耳其40万美元购房入籍</h4><p>适合希望持有实物房产并关注3年后出售退出的客户。</p></div>';
+    h+='<div class="choice-card" data-solution="C" onclick="selectSolution(\'C\')"><h4>方案C：土耳其存款/债券入籍</h4><p>适合偏好现金或固收路径、可接受50万美元锁定的客户。</p></div>';
+    h+='</div>';
+    h+='<div id="projects-A" class="project-list"><div class="stage-hint">请选择项目：</div><div class="project-opt" onclick="selectProject(this,\'tr-fund-cbi\')">土耳其房地产投资基金入籍 · 50万美元 · 锁定3年</div><div class="project-opt" onclick="selectProject(this,\'tr-fund-e2\')">土耳其基金入籍 + 美国E-2后续规划</div></div>';
+    h+='<div id="projects-B" class="project-list"><div class="stage-hint">请选择项目：</div><div class="project-opt" onclick="selectProject(this,\'tr-realestate-cbi\')">土耳其购房入籍 · 40万美元 · 持有3年</div><div class="project-opt" onclick="selectProject(this,\'tr-realestate-education\')">土耳其购房入籍 + 子女教育/华侨生规划</div></div>';
+    h+='<div id="projects-C" class="project-list"><div class="stage-hint">请选择项目：</div><div class="project-opt" onclick="selectProject(this,\'tr-deposit-cbi\')">土耳其银行存款入籍 · 50万美元 · 锁定3年</div><div class="project-opt" onclick="selectProject(this,\'tr-bonds-cbi\')">土耳其政府债券入籍 · 50万美元 · 持有3年</div></div>';
+    h+='<div class="flow-actions"><button class="flow-secondary" onclick="goPrevStage()">返回上一阶段</button><button class="flow-secondary" onclick="goBack()">返回修改问卷</button><button class="flow-primary" onclick="goExecPlan()">下一阶段</button></div>';
+    h+='</div>';
 
     D.getElementById('results').innerHTML=h;
   }
