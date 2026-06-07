@@ -211,8 +211,19 @@ table.cm td:first-child{text-align:left;font-weight:500}
   window.goBack=function(){var D=document;D.getElementById("results").classList.remove("show");D.getElementById("qform").style.display="";setTimeout(function(){D.getElementById("qform").scrollIntoView({behavior:"smooth"});},50);};
 
   window.goPrevStage=function(){
-    var u=new URL(window.location.href);var ret=u.searchParams.get('return')||'';
-    if(ret){window.location.href=ret;}else{history.length>1?history.back():goBack();}
+    var u=new URL(window.location.href);
+    var ret=u.searchParams.get('return')||'';
+    var batch=u.searchParams.get('batch')||'';
+    var issue=u.searchParams.get('issue')||'';
+    if(batch==='1'&&issue){
+      var base=ret||'https://sewen38.github.io/family-plan/';
+      var sep=base.indexOf('?')>=0?'&':'?';
+      window.location.href=base+sep+'batch=1&issue='+issue;
+    }else if(ret){
+      window.location.href=ret;
+    }else{
+      history.length>1?history.back():goBack();
+    }
   };
   window.selectSolution=function(code){
     document.querySelectorAll('.choice-card').forEach(function(x){x.classList.remove('sel')});
@@ -228,7 +239,13 @@ table.cm td:first-child{text-align:left;font-weight:500}
   window.goExecPlan=function(){
     if(!window._selectedSolution){alert('请先选择一个可执行/可选方案');return;}
     if(!window._selectedProject){alert('请先选择具体项目');return;}
-    var u=new URL(window.location.href);var issue=u.searchParams.get('issue')||'';
+    var u=new URL(window.location.href);
+    var batch=u.searchParams.get('batch')||'';
+    var issue=u.searchParams.get('issue')||'';
+    if(batch==='1'&&issue){
+      window.location.href='https://sewen38.github.io/family-plan/batch-summary.html?issue='+issue+'&country=TR';
+      return;
+    }
     var params=new URLSearchParams({issue:issue,country:'tr',solution:window._selectedSolution,project:window._selectedProject,stage:'exec'});
     window.location.href='https://sewen38.github.io/tr-assessment/exec.html?'+params.toString();
   };
