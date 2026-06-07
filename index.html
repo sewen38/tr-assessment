@@ -461,17 +461,34 @@ window.goExecPlan=function(){
     // Disclaimers
     h+='<div class="hb w">⚠️ <strong>重要提示</strong><br>① 本评估由AI基于问卷自动生成，仅供参考，不构成法律意见。<br>② 土耳其CBI政策可能随时调整（2022年已从$25万提至$40万），建议尽快启动。<br>③ 中国籍申请人需注意中国不承认双重国籍的法律风险。<br>④ 实际审批以土耳其内政部人口与公民事务省为准。<br>⑤ 建议聘请持牌移民律师/机构办理，确保合规。</div>';
 
-    h+='<div class="rs-card"><h3 style="font-size:16px;margin-bottom:12px;color:#8b1e1e">✅ 通过评估的项目（可多选）</h3>';
-    h+='<div class="project-check-grid">';
-    h+='<label class="project-check"><input type="checkbox" name="selProject" value="tr-fund-cbi" onchange="onProjectCheck()"> 土耳其房地产投资基金入籍 · 50万美元 · 锁定3年</label>';
-    h+='<label class="project-check"><input type="checkbox" name="selProject" value="tr-fund-e2" onchange="onProjectCheck()"> 土耳其基金入籍 + 美国E-2后续规划</label>';
-    h+='<label class="project-check"><input type="checkbox" name="selProject" value="tr-realestate-cbi" onchange="onProjectCheck()"> 土耳其购房入籍 · 40万美元 · 持有3年</label>';
-    h+='<label class="project-check"><input type="checkbox" name="selProject" value="tr-realestate-education" onchange="onProjectCheck()"> 土耳其购房入籍 + 子女教育/华侨生规划</label>';
-    h+='<label class="project-check"><input type="checkbox" name="selProject" value="tr-deposit-cbi" onchange="onProjectCheck()"> 土耳其银行存款入籍 · 50万美元 · 锁定3年</label>';
-    h+='<label class="project-check"><input type="checkbox" name="selProject" value="tr-bonds-cbi" onchange="onProjectCheck()"> 土耳其政府债券入籍 · 50万美元 · 持有3年</label>';
-    h+='</div>';
-    h+='<div class="flow-actions"><button class="flow-secondary" onclick="goPrevStage()">返回上一阶段</button><button class="flow-secondary" onclick="goBack()">返回修改问卷</button><button class="flow-primary" onclick="goExecPlan()">下一阶段</button></div>';
-    h+='</div>';
+    // Build project options based on eligibility
+    var projectOpts=[];
+    if(pathIsFund){
+      projectOpts.push({v:'tr-fund-cbi', s:invStatus==='n'?'n':'q', d:'土耳其房地产投资基金入籍 · 50万美元 · 锁定3年'});
+      projectOpts.push({v:'tr-fund-e2', s:'q', d:'土耳其基金入籍 + 美国E-2后续规划'});
+    }
+    if(pathIsReal){
+      projectOpts.push({v:'tr-realestate-cbi', s:invStatus==='n'?'n':'q', d:'土耳其购房入籍 · 40万美元 · 持有3年'});
+      projectOpts.push({v:'tr-realestate-education', s:invStatus==='n'?'n':(hasKids?'q':'m'), d:'土耳其购房入籍 + 子女教育/华侨生规划'});
+    }
+    if(pathIsDeposit){
+      projectOpts.push({v:'tr-deposit-cbi', s:invStatus==='n'?'n':'m', d:'土耳其银行存款入籍 · 50万美元 · 锁定3年'});
+    }
+    if(pathIsBonds){
+      projectOpts.push({v:'tr-bonds-cbi', s:invStatus==='n'?'n':'m', d:'土耳其政府债券入籍 · 50万美元 · 持有3年'});
+    }
+    var eligible=projectOpts.filter(function(p){return p.s==='q'||p.s==='m';});
+    if(eligible.length>0){
+      h+='<div class="rs-card"><h3 style="font-size:16px;margin-bottom:12px;color:#8b1e1e">✅ 通过评估的项目（可多选）</h3>';
+      h+='<div class="project-check-grid">';
+      eligible.forEach(function(p){
+        var note=p.s==='m'?' <span style="color:red;font-weight:600">⚠️ 有条件</span>':'';
+        h+='<label class="project-check"><input type="checkbox" name="selProject" value="'+p.v+'" onchange="onProjectCheck()"> '+p.d+note+'</label>';
+      });
+      h+='</div>';
+      h+='<div class="flow-actions"><button class="flow-secondary" onclick="goPrevStage()">返回上一阶段</button><button class="flow-secondary" onclick="goBack()">返回修改问卷</button><button class="flow-primary" onclick="goExecPlan()">下一阶段</button></div>';
+      h+='</div>';
+    }
 
     D.getElementById('results').innerHTML=h;
   }
