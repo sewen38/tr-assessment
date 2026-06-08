@@ -64,7 +64,7 @@
   <div class="card commission" id="commission">
     <h2>💰 佣金明细</h2>
     <div class="grid">
-      <div class="item"><b>房产总价 × 20%</b><span>佣金金额</span></div>
+      <div class="item"><b id="commissionAmt">房产总价 × 20%</b><span>佣金金额（随房价实时计算）</span></div>
       <div class="item"><b>3个月</b><span>结佣周期</span></div>
       <div class="item"><b>根据实际情况</b><span>结佣批次</span></div>
       <div class="item"><b>—</b><span>批结佣金额</span></div>
@@ -131,6 +131,8 @@ function calc(){
   var w=document.getElementById('cw');
   if(P<400000){w.innerHTML='⚠️ 房价低于$400,000，不满足入籍最低门槛！';w.style.background='#fee2e2';w.style.color='#991b1b'}
   else{w.innerHTML='✅ 房价满足入籍门槛(≥$400,000)<br>⚠️ 注意：政府评估价可能低于购买价，务必以官方评估报告为准';w.style.background='#fef3c7';w.style.color='#92400e'}
+  var comm=P*0.2, commRmb=comm*USD/10000;
+  document.getElementById('commissionAmt').innerHTML='房价 × 20% = $'+comm.toLocaleString('en-US')+'（¥'+commRmb.toFixed(2)+'万）';
 }
 
 function buildPlan(){
