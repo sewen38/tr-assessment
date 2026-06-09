@@ -227,6 +227,21 @@ setTimeout(function(){
   }
 },200);
 buildPlan();
+
+setTimeout(function(){
+  var d=document.getElementById("docView");
+  if(!d) return;
+  var hs=d.querySelectorAll("h2,h3");
+  for(var i=0;i<hs.length;i++){
+    if(hs[i].textContent.indexOf("6.1")>=0){
+      var img=document.createElement("img");
+      img.src="flow-土耳其财富架构.svg";img.alt="土耳其财富架构";
+      img.style="width:100%;max-width:800px;border-radius:12px;border:1px solid #e5e7eb;margin:8px 0";
+      hs[i].parentNode.insertBefore(img,hs[i]);break;
+    }
+  }
+},300);
+
 calc();
 </script>
 </body>
